@@ -28,7 +28,7 @@ namespace ZombieSurvival
             maxHp = MaxHp;
             hp = maxHp;
             damage = Damage;
-            uck = r.Next(1, 11);
+            luck = r.Next(1, 11);
         }
 
         //Todo, turn this into a file
