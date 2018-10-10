@@ -12,7 +12,7 @@ namespace ZombieSurvival
         public int maxHp { get; set; }
         public int hp { get; set; }
         public int damage { get; set; }
-        public int luck { get; set; }
+        public int luck { get; set; } //lower numbers = more lucky
         Random r = new Random();
         public Survivor()
         {
@@ -28,6 +28,7 @@ namespace ZombieSurvival
             maxHp = MaxHp;
             hp = maxHp;
             damage = Damage;
+            uck = r.Next(1, 11);
         }
 
         //Todo, turn this into a file
