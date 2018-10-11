@@ -12,7 +12,7 @@ namespace ZombieSurvival
         Random r = new Random();
         public TownList()
         {
-            towns.Add(new Town("Main city", 5)); //(name, difficulty(0-5)
+            towns.Add(new Town("Main city", 5)); //(name, difficulty
             towns.Add(new Town("Hospital", 4));
             towns.Add(new Town("Side city", 3));
             towns.Add(new Town("Small city", 2));
@@ -25,9 +25,17 @@ namespace ZombieSurvival
             result = towns[r.Next(0, towns.Count)];
             return result;
         }
+        public Town GetNewTown(Town input)
+        {
+            Town Result;
+            do
+            {
+                Result = towns[r.Next(0, towns.Count)];
+            } while (input == Result);
+            return Result;
+        }
         public Town GetTownBasedOnDifficulty(int dif)
         {
-            
             List<Town> townList = new List<Town>();
 
             towns.ForEach(x =>
@@ -39,6 +47,12 @@ namespace ZombieSurvival
             });
 
             return townList[r.Next(0, townList.Count)];
+        }
+        public Town buildTown(string name,int difficulty)
+        {
+            Town result = new Town(name,difficulty);
+            towns.Add(result);
+            return result;
         }
     }
 }
