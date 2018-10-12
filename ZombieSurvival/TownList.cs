@@ -12,11 +12,16 @@ namespace ZombieSurvival
         Random r = new Random();
         public TownList()
         {
-            towns.Add(new Town("Main city", 5)); //(name, difficulty
+            towns.Add(new Town("Main city", 5)); //(name, difficulty)
             towns.Add(new Town("Hospital", 4));
             towns.Add(new Town("Side city", 3));
             towns.Add(new Town("Small city", 2));
             towns.Add(new Town("Forest", 1));
+            towns.Add(new Town("Mall",3));
+            towns.Add(new Town("Beach", 1));
+            towns.Add(new Town("Cave", 0));
+            towns.Add(new Town("School", 2));
+            towns.Add(new Town("Office", 2));
         }
         public Town GetRandomTown()
         {

@@ -14,7 +14,7 @@ namespace ZombieSurvival
             Random r = new Random();
             int difficulty = r.Next(1, 5);//Determines difficulty
 
-            Console.ForegroundColor = ConsoleColor.DarkGreen;//sets spooky green text
+            //Console.ForegroundColor = ConsoleColor.DarkGreen;//sets spooky green text
             Console.WriteLine("As the world crumbles to the infected, you wake up");//Intro
             Console.WriteLine("'What is my name?' You think...");
             string name = Console.ReadLine();
@@ -65,6 +65,30 @@ namespace ZombieSurvival
                     switch (x)
                     {
                         case "1": //scavenge locally
+                            int random = r.Next(1, 101);
+                            if (random < 10 + aggro)
+                            {
+                                int zombieCount = r.Next(2, 11);
+                                Console.WriteLine($"As you begin your search, you find a group of {zombieCount} zombies, do you want to continue? y/n");
+                                string input;
+                                do
+                                {
+                                    input = Console.ReadLine().ToLower();
+                                    switch (input)
+                                    {
+                                        case "y":
+                                            Console.WriteLine("You engage the zombies.");
+                                            survivorsList = Fight(survivorsList, zombieCount);
+                                            break;
+                                        case "n":
+                                            Console.WriteLine("You decide not to engage the zombies.");
+                                            break;
+                                        default:
+                                            Console.WriteLine("Please type y or n");
+                                            break;
+                                    }
+                                } while (input != "y" && input != "n");
+                            }
                             finishday = false;
                             break;
                         case "2": //look zombies
@@ -135,6 +159,75 @@ namespace ZombieSurvival
             Console.WriteLine("Press enter to continue");
             Console.ReadLine();
             Console.Clear();
+        }
+        static List<Survivor> Fight(List<Survivor> survivors, int zombieCount)
+        {
+            List<Zombie> zombies = new List<Zombie>();
+            for(int i = 0; i < zombieCount; i++)
+            {
+                zombies.Add(new Zombie());
+            }
+            bool Fight = true;
+            while (Fight)
+            {
+                if(survivors.Count <= 0) // if all humans die end
+                {
+                    Fight = false;
+                }
+                else if (zombies.Count <= 0) // if all zombies die end
+                {
+                    Fight = false; 
+                }
+                else //else fight
+                {
+                    survivors.ForEach(person =>
+                    {
+                        Console.WriteLine($"{person.name}: HP:{person.hp}/{person.maxHp} Damage:{person.damage}");
+                    });
+                    zombies.ForEach(zombie =>
+                    {
+                        Console.WriteLine($"{zombie.name}: HP:{zombie.hp}/{zombie.maxHp} Damage:unknown.");
+                    });
+                    Console.WriteLine($"What would you like to do against the zombies?");
+                    Console.WriteLine("1.Fight");
+                    Console.WriteLine("2.Run");
+                    bool loop = true;
+                    while (loop)
+                    { 
+                        string input = Console.ReadLine();
+                        switch (input)
+                        {
+                            case "1":
+                                loop = false;
+                                zombies.Last().hp -= survivors.First().damage;
+                                if(zombies.Last().hp <= 0)
+                                {
+                                    Console.WriteLine($"{zombies.Last().name} has been killed.");
+                                    zombies.Remove(zombies.Last());
+                                }
+                                survivors.ForEach(person =>
+                                {
+                                    Console.WriteLine($"{person.name}: HP:{person.hp}/{person.maxHp} Damage:{person.damage}");
+                                });
+                                zombies.ForEach(zombie =>
+                                {
+                                    Console.WriteLine($"{zombie.name}: HP:{zombie.hp}/{zombie.maxHp} Damage:unknown.");
+                                });
+                                clearCon();
+                                break;
+                            case "2":
+                                loop = false;
+                                break;
+                            default:
+                                Console.WriteLine("Please enter 1 or 2");
+                                break;
+                        }
+                    }
+                }
+            }
+
+
+            return survivors;
         }
     }
 }
