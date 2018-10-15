@@ -18,6 +18,11 @@ namespace ZombieSurvival
             Console.WriteLine("As the world crumbles to the infected, you wake up");//Intro
             Console.WriteLine("'What is my name?' You think...");
             string name = Console.ReadLine();
+            while (name == "")
+            {
+                Console.WriteLine("No I defiantly have a name... It is...");
+                name = Console.ReadLine();
+            }
             Survivor player = new Survivor(name,r.Next(5,11),r.Next(1,4)); //Player character
             Console.Clear();
             Console.WriteLine($"Ah my name is {player.name}.");
@@ -227,34 +232,48 @@ namespace ZombieSurvival
                                         if(output >=1 && output<= zombies.Count)
                                         {
                                             zombies[output - 1].hp -= survivors[0].damage;
+                                            Console.WriteLine($"{survivors[0].name} has attacked {zombies[output-1].name} for {survivors[0].damage} damage.");
                                             loop = false;
                                         }
                                     }
                                     
-                                    break;
+                                    
                                 }
-                                zombies.Last().hp -= survivors.First().damage;
-                                if(zombies.Last().hp <= 0)
-                                {
-                                    Console.WriteLine($"{zombies.Last().name} has been killed.");
-                                    zombies.Remove(zombies.Last());
-                                }
+                                
+                                
                                 int i = 0;
                                 survivors.ForEach(person =>
                                 {
-                                    if (i != 0)
+                                    if (zombies.Count != 0)
                                     {
-                                        int ran = r.Next(0, zombies.Count);
-                                        zombies[ran].hp -= person.damage;
-                                        Console.WriteLine($"{person.name} has attacked {zombies[ran].name}");
+                                        if (person != survivors[0])
+                                        {
+                                            int ran = r.Next(0, zombies.Count);
+                                            zombies[ran].hp -= person.damage;
+                                            Console.WriteLine($"{person.name} has attacked {zombies[ran].name}");
+                                            if (zombies[ran].hp <= 0)
+                                            {
+                                                Console.WriteLine($"{zombies[ran].name} has been killed.");
+                                                zombies.Remove(zombies[ran]);
+                                            }
+                                        }
                                     }
                                     i++;
                                 });
                                 zombies.ForEach(zombie =>
                                 {
-                                    int ran = r.Next(0, survivors.Count);
-                                    survivors[ran].hp -= zombie.damage;
-                                    Console.WriteLine($"{zombie.name} attacked {survivors[ran].name}");
+                                    if (survivors.Count != 0)
+                                    {
+                                        int ran = r.Next(0, survivors.Count);
+                                        survivors[ran].hp -= zombie.damage;
+                                        Console.WriteLine($"{zombie.name} attacked {survivors[ran].name}");
+                                        if (survivors[ran].hp <= 0)
+                                        {
+                                            Console.WriteLine($"{survivors[ran].name} has been killed.");
+                                            survivors.Remove(survivors[ran]);
+                                        }
+                                    }
+                                    
                                 });
                                 clearCon();
                                 break;
